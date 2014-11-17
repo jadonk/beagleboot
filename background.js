@@ -34,6 +34,11 @@ var beagleboot = (function () {
 
     var devices = {};
 
+    var ROM =    { vendorId:   1105, productId:  24897 };
+    var SPL =    { vendorId: 0x0525, productId: 0xa4a2 };
+    var UBOOT =  { vendorId: 0x0525, productId: 0xa4a5 };
+    var SERIAL = { vendorId: 0x0525, productId: 0xa4a7 }; 
+
     function start() {
       console.log("BeagleBoot started.");
       search();
@@ -41,12 +46,18 @@ var beagleboot = (function () {
 
     function search() {
       console.log("BeagleBoot searching for devices.");
-      chrome.usb.getDevices({}, found_devices);
+      //chrome.usb.findDevices(ROM, found_devices);
+      chrome.usb.getDevices({"filters": [ROM, SPL, UBOOT, SERIAL]}, found_devices);
 
       function found_devices(devices) {
         if(chrome.runtime.lastError != undefined) {
           console.warn('chrome.usb.getDevices error :' +
             chrome.runtime.lastError.message);
+          return;
+        }
+
+        if(devices.length == 0) {
+          console.log('BeagleBoot found no USB devices.');
           return;
         }
 
