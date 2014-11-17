@@ -9,13 +9,17 @@
     "http://beagleboard.org/",
     {
       "usbDevices": [
-        { "vendorId": 1105, "productId": 24897 }
+        { "vendorId": 1105, "productId": 24897 },
+        { "vendorId": 1317, "productId": 42146 },
+        { "vendorId": 1317, "productId": 42149 },
+        { "vendorId": 1317, "productId": 42151 } 
       ]
     }
   ],
   "app": {
     "background": {
-      "scripts": ["background.js"]
+      "scripts": ["background.js"],
+      "persistent": true
     }
   }
 }

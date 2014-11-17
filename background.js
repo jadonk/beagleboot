@@ -33,25 +33,27 @@ var beagleboot = (function () {
     console.log("BeagleBoot initialized.");
 
     var devices = {};
+    var searchTimer;
 
-    var ROM =    { vendorId:   1105, productId:  24897 };
-    var SPL =    { vendorId: 0x0525, productId: 0xa4a2 };
-    var UBOOT =  { vendorId: 0x0525, productId: 0xa4a5 };
-    var SERIAL = { vendorId: 0x0525, productId: 0xa4a7 }; 
+    var ROM =    { vendorId:  1105, productId: 24897 };
+    var SPL =    { vendorId:  1317, productId: 42146 };
+    var UBOOT =  { vendorId:  1317, productId: 42149 };
+    var SERIAL = { vendorId:  1317, productId: 42151 }; 
 
     function start() {
       console.log("BeagleBoot started.");
-      search();
+      if(!searchTimer) {
+        searchTimer = setInterval(search, 3000);
+      }
     }
 
     function search() {
-      console.log("BeagleBoot searching for devices.");
-      //chrome.usb.findDevices(ROM, found_devices);
-      chrome.usb.getDevices({"filters": [ROM, SPL, UBOOT, SERIAL]}, found_devices);
+      console.log("BeagleBoot searching for devices in ROM bootloader mode.");
+      chrome.usb.findDevices(ROM, found_devices);
 
       function found_devices(devices) {
         if(chrome.runtime.lastError != undefined) {
-          console.warn('chrome.usb.getDevices error :' +
+          console.warn('chrome.usb.findDevices error :' +
             chrome.runtime.lastError.message);
           return;
         }
@@ -60,6 +62,9 @@ var beagleboot = (function () {
           console.log('BeagleBoot found no USB devices.');
           return;
         }
+
+        if(searchTimer) clearInterval(searchTimer);
+        searchTimer = false;
 
         for(var device of devices) {
           var deviceInfo = {
