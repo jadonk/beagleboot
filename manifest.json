@@ -6,7 +6,12 @@
   "minimum_chrome_version": "40.0.2202.3",
   "permissions": [
     "usb",
-    "http://beagleboard.org/"
+    "http://beagleboard.org/",
+    {
+      "usbDevices": [
+        { "vendorId": 1105, "productId": 24897 }
+      ]
+    }
   ],
   "app": {
     "background": {
