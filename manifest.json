@@ -1,0 +1,16 @@
+{
+  "manifest_version": 2,
+  "name": "Beagle Boot",
+  "version": "0.0.0",
+  "description": "Boot a BeagleBone or BeagleBone Black",
+  "minimum_chrome_version": "40.0.2202.3",
+  "permissions": [
+    "usb",
+    "http://beagleboard.org/"
+  ],
+  "app": {
+    "background": {
+      "scripts": ["background.js"]
+    }
+  }
+}
